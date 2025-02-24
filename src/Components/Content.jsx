@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import mergeImages from 'merge-images';
 import hb3 from '../assets/img/hb4.png'
-// import { readAndCompressImage } from 'browser-image-resizer';
+// icons
+import { FaStar } from "react-icons/fa";
+import { MdAddAPhoto } from "react-icons/md";
 // import imageResize from 'image-resize';
 import FileResizer from 'react-image-file-resizer';
-
-
+import Modal from './Modal';
 
 const resizeFile = (file) =>
   new Promise((resolve) => {
@@ -26,6 +27,7 @@ const resizeFile = (file) =>
 
 const Content = () => {
   const [selectedImg, setSelectedImg]= useState('');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   // const [selectedFrame, setSelectedFrame]= useState([]);
 
   const getImg= async (e)=> {
@@ -56,6 +58,8 @@ const Content = () => {
       {files:filesArray, blob:URL.createObjectURL(file)} :
       undefined
     )
+
+    setModalIsOpen(true);
   }
 
   const shareBtn= ()=> {
@@ -80,84 +84,41 @@ const Content = () => {
       linkElement.href = selectedImg.blob
       linkElement.click()
     }
+
+    setModalIsOpen(false);
   }
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-2 ml-3 mt-[-30px]">
-        <div className="col-span-2 text-center h-[calc(100dvh-25dvh)]">
-          {selectedImg 
-          && (
-            <>
-              <img 
-                id='foto'
-                src={selectedImg.blob}
-                width={400}
-                height={400}
-                className='max-h-[70vh] object-contain mb-5'
-                alt="Imagen seleccionada" 
-              />
-
-              <a 
-                role="button" 
-                onClick={shareBtn}
-                className="border rounded-full absolute top-[70vh] right-[35%]
-                bg-gradient-to-r from-blue-600 to-purple-600
-                dark:hover:bg-blue-300 focus:outline-none
-                dark:focus:ring-blue-500
-                text-white text-sm px-3 py-2
-              ">
-                <b>Compartir</b>
-              </a>
-
-              {/* <div className='grid grid-cols-3 mt-5 ml-3'>
-                <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                  <a href="#">
-                    <img id="hb1" className="rounded-t-lg" src={hb1} alt="hb1" />
-                  </a>
-                  <div className="p-5">
-                    <a href="#">
-                      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Happy Birthday
-                      </h5>
-                    </a>
-                    <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                      Seleccionar
-                      <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M1 5h12m0 0L9 1m4 4L9 9" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div> */}
-            </>
-          )}
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 m-auto p-10 justify-center mt-[35%]">
         {/* capturar imagen */}
-        <div className='py-10 p-4 m-0'>
-          <a 
-            href='#'
-            className="text-white rounded-full border-0
+        <div className='py-10 p-2 m-0 flex justify-center'>
+          <button 
+            className="text-white rounded-full border-0 text-center
               bg-gradient-to-r from-purple-600 to-amber-600
-              font-medium text-sm py-3 px-10
+              font-medium text-sm py-3 px-10 w-[70%]
               dark:hover:bg-purple-300 focus:outline-none
-              dark:focus:ring-purple-500
-              hover:cursor-pointer hover:opacity-80 max-w-sm">
+              dark:focus:ring-purple-500 uppercase
+              hover:cursor-pointer hover:opacity-80 max-w-sm
+              flex self-center">
+            <FaStar className='mx-2' size={"1.3rem"} />
             Calidficanos
-          </a>
+          </button>
         </div>
         
-        <div className='py-10 p-2 m-0'>
+        <div className='py-10 p-2 m-0 flex justify-center'>
           <label 
             htmlFor="takeimg"
-            className="text-sm text-grey-500
-              py-3 px-10 text-wrap
-              rounded-full border-0
+            className="text-sm text-grey-500 text-center
+              py-3 px-10 text-wrap w-[70%]
+              rounded-full border-0 uppercase
               font-semibold  text-white
               bg-gradient-to-r from-purple-600 to-amber-600
               hover:cursor-pointer hover:opacity-80 max-w-sm
+              flex self-center
             ">
-            Capturar Foto
+            <MdAddAPhoto className='mx-2' size={"1.1rem"} />
+            tomar foto
           </label>
           <input 
             id='takeimg'
@@ -169,6 +130,25 @@ const Content = () => {
           />
         </div>
       </div>
+
+      <Modal 
+        isOpen={modalIsOpen} 
+        shareBtn={shareBtn}
+        onClose={()=>{ setModalIsOpen(false) }}>
+        <div className="flex justify-center">
+          {selectedImg 
+          && (
+            <img 
+              id='foto'
+              src={selectedImg.blob}
+              width={400}
+              height={400}
+              className='max-h-[70vh] object-contain mb-5'
+              alt="Imagen seleccionada" 
+            />
+          )}
+        </div>
+      </Modal>
     </>
   );
 }
