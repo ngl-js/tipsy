@@ -1,58 +1,40 @@
-import React, { useState } from 'react';
-import mergeImages from 'merge-images';
-import hb3 from '../assets/img/hb4.png'
+import React, { useCallback, useState } from 'react';
 // icons
 import { FaStar } from "react-icons/fa";
 import { MdAddAPhoto } from "react-icons/md";
 // import imageResize from 'image-resize';
 import FileResizer from 'react-image-file-resizer';
 import Modal from './Modal';
-
-const resizeFile = (file) =>
-  new Promise((resolve) => {
-    FileResizer.imageFileResizer(
-      file,
-      1000,
-      1600,
-      "JPEG",
-      100,
-      0,
-      (uri) => {
-        resolve(uri);
-      },
-      'blob',
-      1000
-    );
-  });
+// Services
+import { useAxios } from '../hooks/useAxios';
+import { getImageMerged } from '../services/http';
 
 const Content = () => {
-  const [selectedImg, setSelectedImg]= useState('');
+  // const selectedFile = useRef();
+
+  // const [selectedImg, setSelectedImg]= useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const {
+    getData: selectedImg,
+    setGetData: setSelectedImg,
+    isLoading,
+    error 
+  } = useAxios( sendToMerge, undefined );
   // const [selectedFrame, setSelectedFrame]= useState([]);
+  const sendToMerge=  useCallback( async function sendToMerge(e) {
+    const files = e.target.files;
 
-  const getImg= async (e)=> {
-    const files= e.target.files;
+    let data= new FormData();
+    data.append('photo', files[0])
+    data.append('frame', 'hb4')
 
-    // const options = {
-    //   format: 'png',
-    //   width: 1000,
-    //   height: 1800,
-    //   outputType: 'blob'
-    // };
-    // let resizedImg = await imageResize(files[0], options)
-    
-    const resizedImg = await resizeFile(files[0]);
-    console.log(`Rezice: ${resizedImg}`);
-        
-    const b64= await mergeImages([
-      { src: URL.createObjectURL(resizedImg), x: 70, y: 200 },
-      { src: hb3, x: 0, y: 0 }
-    ])
-    const blob= await fetch(b64).then((res)=> {
+    const req= await getImageMerged(data);
+    const blob= await fetch(req.b64).then((res)=> {
       return res.blob()
     })
     let file = new File([blob], "mimomento.jpg", {type: 'image/jpeg'});
     let filesArray = [file];
+
     setSelectedImg(
       (filesArray.length !== 0) ? 
       {files:filesArray, blob:URL.createObjectURL(file)} :
@@ -60,8 +42,9 @@ const Content = () => {
     )
 
     setModalIsOpen(true);
-  }
+  }, [selectedImg, setSelectedImg])
 
+  
   const shareBtn= ()=> {
     if ("share" in navigator) {
       navigator
@@ -126,7 +109,7 @@ const Content = () => {
             accept='image/*'
             className='hidden'
             capture="environment" 
-            onChange={(event)=> {getImg(event)}}
+            onChange={(event)=> {sendToMerge(event)}}
           />
         </div>
       </div>
