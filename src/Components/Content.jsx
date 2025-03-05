@@ -14,7 +14,7 @@ import Button from './Button';
 // Component
 const Content = () => {
   const inputFileRef = useRef( null );
-  const btnStyle= 'bg-gradient-to-r from-purple-600 to-amber-600';
+  const btnStyle= '';
   const [selectedImg, setSelectedImg]= useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading]= useState();
@@ -32,14 +32,7 @@ const Content = () => {
         data.append('frame', 'hb4')
     
         const resp= await getImageMerged(data);
-
-        if (resp.error) {
-          setLoading(false)
-          setError(resp.message);
-          return;
-        }
-        
-        const mergedFile= await setMergedFile(resp.data.b64);
+        const mergedFile= await setMergedFile(resp.b64);
         
         setSelectedImg(mergedFile);
         setModalIsOpen(true);
