@@ -1,48 +1,57 @@
-import React, { useCallback, useState } from 'react';
+import { useRef, useState } from 'react';
 // icons
 import { FaStar } from "react-icons/fa";
 import { MdAddAPhoto } from "react-icons/md";
-// import imageResize from 'image-resize';
-import FileResizer from 'react-image-file-resizer';
-import Modal from './Modal';
+import { ImSpinner } from "react-icons/im";
 // Services
-import { useAxios } from '../hooks/useAxios';
 import { getImageMerged } from '../services/http';
+// Otros
+import { setMergedFile } from '../utils/utils';
+// Components
+import Modal from './Modal';
+import Button from './Button';
 
+// Component
 const Content = () => {
-  // const selectedFile = useRef();
-
-  // const [selectedImg, setSelectedImg]= useState('');
+  const inputFileRef = useRef( null );
+  const btnStyle= 'bg-gradient-to-r from-purple-600 to-amber-600';
+  const [selectedImg, setSelectedImg]= useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const {
-    getData: selectedImg,
-    setGetData: setSelectedImg,
-    isLoading,
-    error 
-  } = useAxios( sendToMerge, undefined );
+  const [loading, setLoading]= useState();
+  const [error, setError]= useState();
   // const [selectedFrame, setSelectedFrame]= useState([]);
-  const sendToMerge=  useCallback( async function sendToMerge(e) {
+
+  const sendToMerge= async (e) => {
     const files = e.target.files;
 
-    let data= new FormData();
-    data.append('photo', files[0])
-    data.append('frame', 'hb4')
+    if (!!files?.length) {
+      setLoading(true);
+      try {
+        let data= new FormData();
+        data.append('photo', files[0])
+        data.append('frame', 'hb4')
+    
+        const resp= await getImageMerged(data);
 
-    const req= await getImageMerged(data);
-    const blob= await fetch(req.b64).then((res)=> {
-      return res.blob()
-    })
-    let file = new File([blob], "mimomento.jpg", {type: 'image/jpeg'});
-    let filesArray = [file];
+        if (resp.error) {
+          setLoading(false)
+          setError(resp.message);
+          return;
+        }
+        
+        const mergedFile= await setMergedFile(resp.data.b64);
+        
+        setSelectedImg(mergedFile);
+        setModalIsOpen(true);
+        setLoading(false);
 
-    setSelectedImg(
-      (filesArray.length !== 0) ? 
-      {files:filesArray, blob:URL.createObjectURL(file)} :
-      undefined
-    )
-
-    setModalIsOpen(true);
-  }, [selectedImg, setSelectedImg])
+      } catch (error) {
+        setLoading(false)
+        setError(error.message ? error.message : 'Error al cargar archivo');
+      }
+      
+    }
+  }
 
   
   const shareBtn= ()=> {
@@ -71,40 +80,47 @@ const Content = () => {
     setModalIsOpen(false);
   }
 
+  const onBtnClick = () => {
+    inputFileRef.current.click();
+  }
+
+  const showSurvey= () => {
+    console.log('encuesta');
+  }
+
+  const closeModal= () => {
+    setSelectedImg(undefined)
+    setModalIsOpen(false)
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 m-auto p-10 justify-center mt-[35%]">
+        {loading && ( <ImSpinner size={"5rem"}  /> )}
+        {(!loading && error) && (
+          <h2 
+            className='text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400'>
+            {error}
+        </h2>)}
         {/* capturar imagen */}
         <div className='py-10 p-2 m-0 flex justify-center'>
-          <button 
-            className="text-white rounded-full border-0 text-center
-              bg-gradient-to-r from-purple-600 to-amber-600
-              font-medium text-sm py-3 px-10 w-[70%]
-              dark:hover:bg-purple-300 focus:outline-none
-              dark:focus:ring-purple-500 uppercase
-              hover:cursor-pointer hover:opacity-80 max-w-sm
-              flex self-center">
-            <FaStar className='mx-2' size={"1.3rem"} />
-            Calidficanos
-          </button>
+          <Button 
+            handleOnClick={showSurvey} 
+            xtraStyles={btnStyle}>
+              <FaStar className='mr-2' size={"1.3rem"} />
+              Calificanos
+          </Button>
         </div>
         
         <div className='py-10 p-2 m-0 flex justify-center'>
-          <label 
-            htmlFor="takeimg"
-            className="text-sm text-grey-500 text-center
-              py-3 px-10 text-wrap w-[70%]
-              rounded-full border-0 uppercase
-              font-semibold  text-white
-              bg-gradient-to-r from-purple-600 to-amber-600
-              hover:cursor-pointer hover:opacity-80 max-w-sm
-              flex self-center
-            ">
-            <MdAddAPhoto className='mx-2' size={"1.1rem"} />
-            tomar foto
-          </label>
+          <Button
+            handleOnClick={onBtnClick}
+            xtraStyles={btnStyle}>
+              <MdAddAPhoto className='mr-2' size={"1.1rem"} />
+              tomar foto
+          </Button>
           <input 
-            id='takeimg'
+            ref={inputFileRef}
             type="file" 
             accept='image/*'
             className='hidden'
@@ -117,15 +133,13 @@ const Content = () => {
       <Modal 
         isOpen={modalIsOpen} 
         shareBtn={shareBtn}
-        onClose={()=>{ setModalIsOpen(false) }}>
+        onClose={closeModal}>
         <div className="flex justify-center">
-          {selectedImg 
+          {(selectedImg && !error)
           && (
             <img 
               id='foto'
               src={selectedImg.blob}
-              width={400}
-              height={400}
               className='max-h-[70vh] object-contain mb-5'
               alt="Imagen seleccionada" 
             />
