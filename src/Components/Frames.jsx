@@ -21,7 +21,7 @@ const Frames = ({ assets, selectedFrame, onSelect }) => {
       <div>
         <img 
           className="h-auto w-full max-w-full rounded-lg object-cover 
-            object-center md:h-[70vh]"
+            object-center xs:h-[30vh] sm:h-[50vh] md:h-[70vh]"
           src={url}
           alt="" />
       </div>

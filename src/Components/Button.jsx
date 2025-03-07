@@ -7,7 +7,7 @@ const Button = ({ handleOnClick, styl, children }) => {
         role="button" 
         onClick={handleOnClick}
         className={`inline-flex items-center justify-center 
-          w-full px-5 py-3 text-md font-bold text-white
+          w-full px-4 py-2 text-md font-bold text-white
           bg-gradient-to-br from-purple-800 to-orange-400
           border-t-orange-400 border-l-orange-400 border-2 border-purple-500
           sm:w-auto rounded-xl font-pj hover:bg-purple-600 focus:outline-none focus:ring-2

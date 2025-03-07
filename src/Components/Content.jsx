@@ -118,12 +118,11 @@ const Content = () => {
     setSelectedFrame(undefined)
     setModalIsOpen(false)
     setType(false)
-    setIsVideo(false)
   }
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 m-auto p-10 justify-center mt-[35%] my-60">
+      <div className="grid grid-cols-1 lg:grid-cols-2 m-auto p-10 justify-center mt-[35%] my-10">
 
         {loading && ( 
           <div className="z-30 absolute h-100 flex justify-cente items-center left-1/3">

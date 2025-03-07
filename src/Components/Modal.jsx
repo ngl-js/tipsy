@@ -23,7 +23,7 @@ export default function Modal({
   if (!isOpen) return null;
   return createPortal(
     <div className='modal'>
-      <div className='modal-container'>
+      <div className='modal-container xs:h-[30vh] md:h-[50vh] lg:h-[70vh]'>
         <div className='grid grid-cols-1'>
           <div  className='modal-body'>
             {isOpen ? children : null}
