@@ -20,8 +20,7 @@ export default function Modal({ isOpen, children, shareBtn, onClose }) {
             <div className='flex justify-center'>
               <Button 
                 role="button" 
-                handleOnClick={shareBtn}
-                xtraStyles="bg-gradient-to-r from-purple-600 to-blue-600">
+                handleOnClick={shareBtn}>
                   <MdShare className='mr-2' size={"1.3rem"} />
                   Compartir
               </Button>
@@ -29,8 +28,7 @@ export default function Modal({ isOpen, children, shareBtn, onClose }) {
 
             <div className='flex justify-center'>
               <Button 
-                handleOnClick={onClose}
-                xtraStyles='bg-gradient-to-r from-purple-500 to-blue-400'>
+                handleOnClick={onClose}>
                   <IoMdClose className='mr-2' size={"1.3rem"} />
                   Cerrar
               </Button>
