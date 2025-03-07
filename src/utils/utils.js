@@ -4,7 +4,6 @@
  * Convertir base64 a File[] y URL blob
  */
 export const setMergedFile= async (resp)=> {
-  console.log(resp);
   let blob, imageType, filename
   if (resp.type=='video') {
     imageType= 'video/mp4'
@@ -15,7 +14,7 @@ export const setMergedFile= async (resp)=> {
     imageType= 'image/jpeg'
     filename= "mimomento.jpg"
     // Decode Base64 string
-    const decodedData = window.atob(b64);
+    const decodedData = window.atob(resp.b64);
     // Create UNIT8ARRAY of size same as row data length
     const uInt8Array = new Uint8Array(decodedData.length);
     // Insert all character code into uInt8Array
