@@ -175,14 +175,14 @@ const Content = () => {
             <img 
               id='foto'
               src={selectedImg.blob}
-              className='object-contain rounded-lg border-4 mt-6 mb-30'
+              className='object-contain rounded-lg border-4 mt-6 mb-18'
               alt="Imagen seleccionada" 
             />
           )}
           {(selectedImg && !!isvideo)
           && (
             <video 
-              className='object-contain rounded-lg border-4 mt-6 mb-30'
+              className='object-contain rounded-lg border-4 mt-6 mb-18'
               controls
               src={selectedImg.blob}>
             </video>
