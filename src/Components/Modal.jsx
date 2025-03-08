@@ -23,13 +23,13 @@ export default function Modal({
   if (!isOpen) return null;
   return createPortal(
     <div className='modal'>
-      <div className='modal-container xs:h-[30vh] md:h-[50vh] lg:h-[70vh]'>
+      <div className='modal-container'>
         <div className='grid grid-cols-1'>
           <div  className='modal-body'>
             {isOpen ? children : null}
           </div>
 
-          {!selectedImg && (
+          {/* {!selectedImg && (
           <div className="flex items-center mb-4 ml-2">
             <input onClick={setType}
               id="default-checkbox" type="checkbox" defaultValue 
@@ -42,7 +42,7 @@ export default function Modal({
               text-gray-900 dark:text-dark-300">
                 Incluir music
               </label>
-          </div>)}
+          </div>)} */}
 
           <div className='grid grid-cols-2'>
             {(!selectedFrame || !selectedImg) &&

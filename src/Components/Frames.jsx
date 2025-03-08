@@ -17,11 +17,11 @@ const Frames = ({ assets, selectedFrame, onSelect }) => {
   }
 
   return (
-    <div className="grid gap-4 h-[75vh] pb-4 my-3">
+    <div className="grid gap-4 h-auto my-3">
       <div>
         <img 
-          className="h-auto w-full max-w-full rounded-lg object-cover 
-            object-center xs:h-[30vh] sm:h-[50vh] md:h-[70vh]"
+          className="w-70 ml-7 pb-4 rounded-lg object-cover 
+            object-center"
           src={url}
           alt="" />
       </div>

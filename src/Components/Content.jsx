@@ -117,6 +117,7 @@ const Content = () => {
     setSelectedImg(undefined)
     setSelectedFrame(undefined)
     setModalIsOpen(false)
+    setError(undefined)
     setType(false)
   }
 
