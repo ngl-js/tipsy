@@ -59,7 +59,6 @@ const Content = () => {
         const mergedFile= await setMergedFile(resp);
         
         setSelectedImg(mergedFile);
-        setModalIsOpen(true);
         setLoading(false);
 
       } catch (error) {
