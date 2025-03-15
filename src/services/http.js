@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const baseURL= 'tipsyapi-production.up.railway.app/tipsyAPI'
+export const baseURL= 'https://tipsyapi-production.up.railway.app/tipsyAPI'
 
 export const getImageMerged= async (data)=> {
   const url= `${baseURL}/mergeImg`
