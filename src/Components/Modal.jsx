@@ -29,7 +29,7 @@ export default function Modal({
             {isOpen ? children : null}
           </div>
 
-          {!selectedImg && (
+          {/* {!selectedImg && (
           <div className="flex items-center mb-4 ml-2">
             <input onClick={setType}
               id="default-checkbox" type="checkbox" defaultValue 
@@ -42,7 +42,7 @@ export default function Modal({
               text-gray-900 dark:text-dark-300">
                 Incluir music
               </label>
-          </div>)}
+          </div>)} */}
 
           <div className='grid grid-cols-2'>
             {(!selectedFrame || !selectedImg) &&

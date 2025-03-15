@@ -1,13 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { baseURL } from "../services/http";
 import noImage from "../assets/img/no-image.jpg";
 
-const Frames = ({ assets, selectedFrame, onSelect }) => {
+const Frames = ({ assets, onSelect }) => {
   const [url, setUrl]= useState(noImage)
   const [focus, setFocus]= useState();
-
-  let cols= assets?.frames.length ?? 0;
-  let gridStyles= `grid grid-cols-${cols} gap-${cols} inline-flex justify-center`
 
   const handleUrl= (selected) => {
     const _url= `${baseURL}/img/frames/${selected}`
@@ -20,14 +17,17 @@ const Frames = ({ assets, selectedFrame, onSelect }) => {
     <div className="grid gap-4 h-auto my-3">
       <div>
         <img 
-          className="w-70 ml-7 pb-4 rounded-lg object-cover 
-            object-center"
+          className="pb-4 rounded-lg object-cover 
+            object-center h-[60vh]"
           src={url}
           alt="" />
       </div>
-      <div className={gridStyles}>
+      <section 
+        className="flex overflow-x-auto space-x-8 w-1/1">
         { assets.frames.map( frame=> (
-          <div key={frame.name}>
+          <div
+            className="flex-shrink-0 rounded-lg border-2" 
+            key={frame.name}>
             <img
               onClick={()=> { handleUrl(frame.name) }}
               src={`${baseURL}/img/frames/${frame.name}`}
@@ -37,7 +37,7 @@ const Frames = ({ assets, selectedFrame, onSelect }) => {
           </div>
         ))}
         
-      </div>
+      </section>
     </div>
   );
 }
