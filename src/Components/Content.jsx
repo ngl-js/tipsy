@@ -57,6 +57,8 @@ const Content = () => {
         const resp= await getImageMerged(data);
         if (resp.type==='video')
           setIsVideo(true);
+        else 
+          setIsVideo(false);
 
         const mergedFile= await setMergedFile(resp);
         
@@ -119,6 +121,7 @@ const Content = () => {
     setError(undefined)
     setPhotoType(false)
     setSelectedAudio(undefined)
+    setIsVideo(false);
   }
 
   return (
