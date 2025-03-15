@@ -15,7 +15,7 @@ const Frames = ({ assets, onSelect }) => {
 
   return (
     <div className="grid gap-4 h-auto my-3">
-      <div>
+      <div className="flex justify-center">
         <img 
           className="pb-4 rounded-lg object-cover 
             object-center h-[60vh]"
