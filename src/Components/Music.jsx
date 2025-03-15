@@ -1,0 +1,76 @@
+import { useState } from "react";
+import { baseURL } from "../services/http";
+// Components
+import Button from "./Button";
+// icons
+import { FaRegCheckCircle } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
+
+
+const Music = ({ assets, setPhotoType, setSelectedAudio }) => {
+  const [focus, setFocus]= useState(true);
+
+  const handleMusic= (audio) => {
+    setFocus(audio)
+  }
+
+  const handleSelectedMusic= (skip=true) => {
+    setSelectedAudio(focus);
+    setPhotoType(!skip);
+  }
+
+  return (
+    <>
+      <div className="flex flex-col gap-10 w-[85vw] h-[60vh]">
+        <h1 className="text-center text-2xl py-3 text-fuchsia-900">Añadir musica</h1>
+        { assets.audios.map( audio=> (
+          <div  key={audio.name}  
+            className={`inline-flex items-center p-3 border-1 border-solid border-purple-300 rounded-lg` +
+            `${ focus==audio.name ? ' focus: border-2 border-solid rounded-lg' : '' } fadeMe`}>
+            <label className="relative flex items-center cursor-pointer" htmlFor={audio.name}>
+              <input 
+                id={audio.name}
+                onClick={()=> { handleMusic(audio.name) }} 
+                name="audio" type="radio" 
+                className="peer h-5 w-5 cursor-pointer appearance-none 
+                  rounded-full border border-slate-400 checked:border-slate-400 
+                  transition-all checked:bg-purple-400" />
+              <span className="absolute bg-indigo-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+            </label>
+            <label className="ml-2 text-slate-600 cursor-pointer text-sm" htmlFor={audio.name}>
+              <div className="px-5 w-[80vw]">
+                <p className="font-medium uppercase p-2">
+                  {`${audio.name}`.replace('.mp3', '')}
+                </p>
+                <audio className="w-[60vw]" controls src={`${baseURL}/audio/${audio.name}`}></audio>
+              </div>
+            </label>
+          </div>
+        ))}
+      </div>
+
+      {/* seleccionar audio */}
+      <div className="grid grid-cols-2 my-10">
+        <div className='justify-center'>
+          <Button 
+            disabled={focus===true}
+            handleOnClick={()=>{handleSelectedMusic(false)}}>
+              <FaRegCheckCircle className='mr-2' size={"1.3rem"} />
+              Seleccionar
+          </Button>
+        </div>
+
+        
+        <div className='justify-center'>
+          <Button
+            handleOnClick={handleSelectedMusic}>
+              <MdOutlineCancel className='mr-2' size={"1.3rem"} />
+              Omitir
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Music;

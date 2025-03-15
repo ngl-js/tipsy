@@ -11,6 +11,7 @@ import { setMergedFile } from '../utils/utils';
 import Modal from './Modal';
 import Button from './Button';
 import Frames from './Frames';
+import Music from './Music';
 
 // Component
 const Content = () => {
@@ -23,8 +24,8 @@ const Content = () => {
   const [error, setError]= useState();
   const [isvideo, setIsVideo]= useState(false);
   const [selectedFrame, setSelectedFrame]= useState();
-  const [type, setType]= useState(false);
-  // const [isSelectedFrame, setSelectedFrame]= useState();
+  const [photoType, setPhotoType]= useState(false);
+  const [selectedAudio, setSelectedAudio]= useState();
 
   useEffect( ()=> {
     setLoading(true);
@@ -50,7 +51,8 @@ const Content = () => {
         let data= new FormData()
         data.append('photo', files[0])
         data.append('frame', selectedFrame)
-        data.append('type', type)
+        data.append('type', photoType)
+        data.append('audio', selectedAudio)
 
         const resp= await getImageMerged(data);
         if (resp.type==='video')
@@ -91,8 +93,6 @@ const Content = () => {
       linkElement.href = selectedImg.blob
       linkElement.click()
     }
-
-    setModalIsOpen(false);
   }
 
   const onPhotoBtnClick = () => {
@@ -109,7 +109,7 @@ const Content = () => {
   }
 
   const typePhoto= () => {
-    setType( prev=> (!prev))
+    setPhotoType( prev=> (!prev))
   }
 
   const closeModal= () => {
@@ -117,7 +117,8 @@ const Content = () => {
     setSelectedFrame(undefined)
     setModalIsOpen(false)
     setError(undefined)
-    setType(false)
+    setPhotoType(false)
+    setSelectedAudio(undefined)
   }
 
   return (
@@ -125,16 +126,20 @@ const Content = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 m-auto p-10 justify-center mt-[35%] my-10">
 
         {loading && ( 
-          <div className="z-30 absolute h-100 flex justify-cente items-center left-1/3">
-            <ImSpinner9 className='animate-spin self-cente left-1/3 text-purple-500' size={"5rem"}  />
+          <div className="z-30 absolute h-100 flex justify-cente items-center">
+            <ImSpinner9 className='animate-spin self-cente w-[80vw] text-purple-500' size={"5rem"}  />
           </div>
         )}
         {(!loading && error) && (
-          <div className="grid grid-cols-1 justify-center items-center border-2 border-rose-500 rounded-lg p-2">
-            <h2 
-              className='text-center font-medium text-transparent bg-clip-text bg-gradient-to-br to-pink-600 from-purple-400'>
-              {error}
-            </h2>
+          <div 
+            onClick={()=>{setModalIsOpen(false)}}
+            className='absolute z-50 top-1/2 bg-white w-[80vw]'>
+            <div className="grid grid-cols-1 justify-center items-center border-2 border-rose-500 rounded-lg p-2">
+              <h2 
+                className='text-center font-medium text-transparent bg-clip-text bg-gradient-to-br to-pink-600 from-purple-400'>
+                {error}
+              </h2>
+            </div>
           </div>
         )}
         {/* capturar imagen */}
@@ -166,15 +171,17 @@ const Content = () => {
         selectedFrame={selectedFrame}
         sendToMerge={sendToMerge}
         setLoading={setLoading}
-        setType={typePhoto}
+        setPhotoType={typePhoto}
+        assets={assets}
+        selectedAudio={selectedAudio}
         >
-        <div className="flex justify-cente">
+        <div className="h-[75vh]">
           {(selectedImg && !isvideo)
           && (
             <img 
               id='foto'
               src={selectedImg.blob}
-              className='object-contain rounded-lg border-4 mt-6 mb-18'
+              className='object-contain rounded-lg border-4 border-purple-500 mt-6 mb-18'
               alt="Imagen seleccionada" 
             />
           )}
@@ -187,12 +194,21 @@ const Content = () => {
             </video>
           )}
 
-          {(!selectedFrame || !selectedImg) &&
+          {((!selectedFrame || (selectedAudio && selectedFrame) )  && assets?.frames) &&
           ( <Frames 
               assets={assets}
               onSelect={setSelectedFrame}
-              selectedFrame={selectedFrame}
+              selectedImg={selectedImg}
+              selectedAudio={selectedAudio}
             /> 
+          )}
+
+          {selectedFrame && !selectedAudio && assets?.audios && (
+            <Music
+              assets={assets}
+              setPhotoType={setPhotoType}
+              setSelectedAudio={setSelectedAudio}
+            />
           )}
         </div>
       </Modal>
