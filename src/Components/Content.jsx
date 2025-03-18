@@ -27,6 +27,8 @@ const Content = () => {
   const [photoType, setPhotoType]= useState(false);
   const [selectedAudio, setSelectedAudio]= useState();
 
+  const outputh_class= 'object-contain rounded-lg border-4 border-purple-500 mt-6 mb-18';
+
   useEffect( ()=> {
     setLoading(true);
     async function fecthAssets() {
@@ -184,14 +186,14 @@ const Content = () => {
             <img 
               id='foto'
               src={selectedImg.blob}
-              className='object-contain rounded-lg border-4 border-purple-500 mt-6 mb-18'
+              className={outputh_class}
               alt="Imagen seleccionada" 
             />
           )}
           {(selectedImg && !!isvideo)
           && (
             <video 
-              className='object-contain rounded-lg border-4 mt-6 mb-18'
+              className={outputh_class}
               controls
               src={selectedImg.blob}>
             </video>
