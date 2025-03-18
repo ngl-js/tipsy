@@ -10,8 +10,8 @@ export const setMergedFile= async (resp)=> {
     filename= "mimomento.mp4"
   } 
   else {
-    imageType= 'image/jpeg'
-    filename= "mimomento.jpg"
+    imageType= 'image/webp'
+    filename= "mimomento.webp"
   }
   // Decode Base64 string
   const decodedData = window.atob(resp.b64);

@@ -21,7 +21,7 @@ const Music = ({ assets, setPhotoType, setSelectedAudio }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-10 w-[85vw] h-[60vh]">
+      <div className="flex flex-col gap-4 w-[85vw] h-[60vh] overflow-x-hidden overflow-y-auto">
         <h1 className="text-center text-2xl py-3 text-fuchsia-900">Añadir musica</h1>
         { assets.audios.map( audio=> (
           <div  key={audio.name}  

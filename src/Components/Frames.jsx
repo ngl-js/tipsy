@@ -21,12 +21,17 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
     onSelect(focus);
   }
 
+  let titulo;
+  selectedAudio ? 
+    titulo= 'Tomar una fotografía' :
+    titulo= 'Seleccionar un marco';
+
   return (
     <div className="grid gap-4 h-auto my-2">
       {!selectedImg &&
       ( <>
         <h1 className="text-center text-2xl text-fuchsia-900">
-          Seleccionar un marco
+          {titulo}
         </h1>
         <div className="flex justify-center">
           <img 
