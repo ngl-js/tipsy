@@ -27,7 +27,7 @@ const Content = () => {
   const [photoType, setPhotoType]= useState(false);
   const [selectedAudio, setSelectedAudio]= useState();
 
-  const outputh_class= 'object-contain rounded-lg border-4 border-purple-500 mt-6 mb-18';
+  const outputh_class= 'object-contain rounded-lg border-4 border-orange-400 mt-2 mb-18';
 
   useEffect( ()=> {
     setLoading(true);
@@ -81,7 +81,7 @@ const Content = () => {
         .share({
           files: selectedImg.files,
           title: "Images",
-          text: "Mi foto en Tipsy"
+          text: "Mi momento con Tipsy"
         })
         .then(() => {
           console.log("Callback after sharing");

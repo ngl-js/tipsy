@@ -21,17 +21,29 @@ export default function Modal({
   children 
 }) {
 
+  let gapping= (selectedImg && selectedAudio);
   let animation='jumpMe';
   if (!isOpen) return null;
+
   return createPortal(
     <div className={`modal`}>
       <div className={`modal-container rounded-lg ${animation}`}>
         <div className='grid grid-cols-1'>
+          <div className=' row-end-1 flex justify-end'>
+            <button
+              className='inline-flex items-center border-2
+               border-orange-300 rounded-lg text-gray-500
+               text-sm px-1 fadeMe'
+              onClick={onClose}>
+              <IoMdClose className='mr-0' size={"1.3rem"} />
+            </button>
+          </div>
           <div  className='modal-body'>
             {isOpen ? children : null}
           </div>
 
-          <div className='grid grid-cols-2 gap-4'>
+          <div 
+            className={`grid grid-cols-${gapping ? '2':'1'} gap-4`}>
             {selectedAudio &&
             (<div className='flex justify-center'>
               <Button
@@ -61,14 +73,6 @@ export default function Modal({
               </Button>
             </div>)}
 
-            {selectedAudio && 
-            (<div className='flex justify-center'>
-              <Button 
-                handleOnClick={onClose}>
-                  <IoMdClose className='mr-2' size={"1.3rem"} />
-                  Cerrar
-              </Button>
-            </div>)}
           </div>
           
         </div>

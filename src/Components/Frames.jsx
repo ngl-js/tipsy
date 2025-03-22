@@ -30,13 +30,13 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
     <div className="grid gap-4 h-auto my-2">
       {!selectedImg &&
       ( <>
-        <h1 className="text-center text-2xl text-fuchsia-900">
+        <h1 className="text-center text-2xl text-orange-500">
           {titulo}
         </h1>
         <div className="flex justify-center">
           <img 
             className="pb-4 rounded-lg object-cover 
-              object-center h-[60vh] fadeMe"
+              object-center h-[50vh] fadeMe"
             src={url}
             alt="" />
         </div>
@@ -47,13 +47,13 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
             className="flex overflow-x-auto space-x-8 w-1/1">
             { assets.frames.map( frame=> (
               <div
-                className="flex-shrink-0 rounded-lg border-2 border-purple-300" 
+                className="flex-shrink-0 rounded-lg border-2 border-orange-300" 
                 key={frame.name}>
                 <img
                   onClick={()=> { handleUrl(frame.name) }}
                   src={`${baseURL}/img/frames/${frame.name}`}
                   className={`object-cover object-center h-20 max-w-full rounded-lg cursor-pointer fadeMe
-                  ${ focus==frame.name ? 'focus: border-purple-300 border-5 border-dashed' : '' } `} 
+                  ${ focus==frame.name ? 'focus: border-orange-300 border-5 border-dashed' : '' } `} 
                   alt="frame-image" />
               </div>
             ))}
