@@ -1,7 +1,12 @@
 
-const Button = ({ handleOnClick, disabled=false, styl='', children }) => {
+const Button = ({ handleOnClick, disabled=false, children }) => {
 
-  const disStyle= disabled ? 
+  const onClickme= ()=> {
+    // this way for future
+    handleOnClick()
+  }
+
+  const disabledStyle= disabled ? 
     ` text-gray-400 bg-gradient-to-br from-neutral-200 to-neutral-300 ` :
     ` text-white bg-gradient-to-r from-gray-600 to-orange-400 `;
 
@@ -10,13 +15,12 @@ const Button = ({ handleOnClick, disabled=false, styl='', children }) => {
       <button 
         role="button" 
         disabled={disabled}
-        onClick={handleOnClick}
+        onClick={onClickme}
         className={`inline-flex items-center justify-center
-          w-full px-4 py-2 text-md font-bold ` + disStyle +
-          `border-t-orange-400 border-l-orange-400 border-2 border-gray-400
-          sm:w-auto rounded-xl font-pj hover:bg-purple-600 focus:outline-none focus:ring-2
-          focus:ring-offset-2 focus:ring-gray-900
-          transition delay-150 duration-500 ease-in-out hover:-translate-y-1 hover:scale-120 fadeMe ${styl}`}
+          w-full px-4 py-2 text-md font-bold ${disabledStyle}
+          border-t-orange-400 border-l-orange-400 border-2
+          border-gray-400 rounded-xl hover:bg-purple-600
+          sm:w-auto jumpMe`}
           >
         {children}
       </button>

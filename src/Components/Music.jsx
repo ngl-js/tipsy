@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { baseURL } from "../services/http";
 // Components
 import Button from "./Button";
 // icons
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
+// Context
+import { MediaContext } from "../context/MediaContext";
 
 
-const Music = ({ assets, setPhotoType, setSelectedAudio }) => {
+const Music = () => {
+  const { 
+    assets, 
+    setSelectedAudio,
+    setPhotoType 
+  }= useContext(MediaContext)
+  
   const [focus, setFocus]= useState(true);
 
   const handleMusic= (audio) => {
@@ -21,7 +29,7 @@ const Music = ({ assets, setPhotoType, setSelectedAudio }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 w-[85vw] h-[50vh] overflow-x-hidden overflow-y-auto">
+      <div className="flex flex-col gap-4 w-[85vw] h-[70vh] overflow-x-hidden overflow-y-auto">
         <h1 className="text-center text-2xl py-3 text-orange-500">Añadir musica</h1>
         { assets.audios.map( audio=> (
           <div  key={audio.name}  
@@ -50,7 +58,7 @@ const Music = ({ assets, setPhotoType, setSelectedAudio }) => {
       </div>
 
       {/* seleccionar audio */}
-      <div className="grid grid-cols-2 my-10">
+      <div className="grid grid-cols-2 my-10 gap-4">
         <div className='justify-center'>
           <Button 
             disabled={focus===true}

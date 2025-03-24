@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { createPortal } from 'react-dom';
 import './Modal.css';
 // icons
@@ -7,23 +7,29 @@ import { IoMdClose } from "react-icons/io";
 import { MdAddAPhoto } from "react-icons/md";
 // Components
 import Button from './Button';
+// Context
+import { MediaContext } from '../context/MediaContext';
 
 export default function Modal({ 
-  isOpen, 
-  onClose, 
   shareBtn, 
   onPhotoBtnClick,
   inputFileRef,
-  selectedImg,
-  selectedFrame,
-  selectedAudio,
   sendToMerge,
   children 
 }) {
 
+  const { 
+      selectedImg, 
+      selectedFrame,
+      selectedAudio,
+      modalIsOpen,
+      closeModal
+  }= useContext(MediaContext)
+
   let gapping= (selectedImg && selectedAudio);
   let animation='jumpMe';
-  if (!isOpen) return null;
+
+  if (!modalIsOpen) return null;
 
   return createPortal(
     <div className={`modal`}>
@@ -34,12 +40,12 @@ export default function Modal({
               className='inline-flex items-center border-2
                border-orange-300 rounded-lg text-gray-500
                text-sm px-1 fadeMe'
-              onClick={onClose}>
+              onClick={closeModal}>
               <IoMdClose className='mr-0' size={"1.3rem"} />
             </button>
           </div>
           <div  className='modal-body'>
-            {isOpen ? children : null}
+            {modalIsOpen ? children : null}
           </div>
 
           <div 
@@ -65,8 +71,7 @@ export default function Modal({
             {(selectedImg && selectedAudio) &&
             (<div className='flex justify-center'>
               <Button 
-                role="button" 
-                styl="animate-pulse ease-out duration-300"
+                role="button"
                 handleOnClick={shareBtn}>
                   <MdShare className='mr-2' size={"1.3rem"} />
                   Compartir

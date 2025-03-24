@@ -1,5 +1,5 @@
 import React from 'react'
-import icon from '../../public/tipsy.ico'
+import icon from '../tipsy.ico'
 
 export default function Header() {
   return (

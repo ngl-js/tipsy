@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { baseURL } from "../services/http";
 // otros
 import noImage from "../assets/img/no-image.jpg";
@@ -6,10 +6,19 @@ import noImage from "../assets/img/no-image.jpg";
 import { FaRegCheckCircle } from "react-icons/fa";
 // Components
 import Button from "./Button";
+// Context
+import { MediaContext } from "../context/MediaContext";
 
-const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
+const Frames = () => {
+  const { assets }= useContext(MediaContext)
   const [url, setUrl]= useState(noImage)
   const [focus, setFocus]= useState();
+
+  const { 
+    selectedImg, 
+    setSelectedFrame,
+    selectedAudio
+   }= useContext(MediaContext)
 
   const handleUrl= (selected) => {
     const _url= `${baseURL}/img/frames/${selected}`
@@ -18,7 +27,7 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
   }
 
   const selectFrame= () => {
-    onSelect(focus);
+    setSelectedFrame(focus);
   }
 
   let titulo;
@@ -29,7 +38,7 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
   return (
     <div className="grid gap-4 h-auto my-2">
       {!selectedImg &&
-      ( <>
+      (<>
         <h1 className="text-center text-2xl text-orange-500">
           {titulo}
         </h1>
@@ -41,8 +50,8 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
             alt="" />
         </div>
       </>)}
-      {!selectedAudio && 
-      ( <>
+      {!selectedAudio
+        && (<>
           <section 
             className="flex overflow-x-auto space-x-8 w-1/1">
             { assets.frames.map( frame=> (
@@ -54,7 +63,8 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
                   src={`${baseURL}/img/frames/${frame.name}`}
                   className={`object-cover object-center h-20 max-w-full rounded-lg cursor-pointer fadeMe
                   ${ focus==frame.name ? 'focus: border-orange-300 border-5 border-dashed' : '' } `} 
-                  alt="frame-image" />
+                  alt="frame-image" 
+                />
               </div>
             ))}
           </section>
@@ -65,8 +75,8 @@ const Frames = ({ assets, onSelect, selectedImg, selectedAudio }) => {
               <FaRegCheckCircle className='mr-2' size={"1.3rem"} />
               Seleccionar
           </Button>
-        </>
-      )}
+        </>)
+      }
     </div>
   );
 }
