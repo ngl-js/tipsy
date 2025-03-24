@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 
-
 export const MediaContext = createContext({
   // States
   assets:[],
@@ -37,7 +36,6 @@ const MediaCtxProvider = ({ children }) => {
   const [loading, setLoading]= useState(false);
   const [isvideo, setIsVideo]= useState(false);
   const [photoType, setPhotoType]= useState(false);
-
 
   const closeModal= () => {
     setSelectedImg(undefined)

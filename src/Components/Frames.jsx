@@ -10,15 +10,16 @@ import Button from "./Button";
 import { MediaContext } from "../context/MediaContext";
 
 const Frames = () => {
-  const { assets }= useContext(MediaContext)
-  const [url, setUrl]= useState(noImage)
-  const [focus, setFocus]= useState();
 
   const { 
+    assets,
     selectedImg, 
     setSelectedFrame,
     selectedAudio
-   }= useContext(MediaContext)
+  }= useContext(MediaContext)
+
+  const [url, setUrl]= useState(noImage)
+  const [focus, setFocus]= useState();
 
   const handleUrl= (selected) => {
     const _url= `${baseURL}/img/frames/${selected}`
@@ -34,6 +35,13 @@ const Frames = () => {
   selectedAudio ? 
     titulo= 'Tomar una fotografía' :
     titulo= 'Seleccionar un marco';
+  
+  if (!(!!assets?.frames)) 
+    return (
+      <h1 className="absolute justify-center top-1/3 left-1/3">
+        No frames data!
+      </h1>
+    );
 
   return (
     <div className="grid gap-4 h-auto my-2">
@@ -51,32 +59,31 @@ const Frames = () => {
         </div>
       </>)}
       {!selectedAudio
-        && (<>
-          <section 
-            className="flex overflow-x-auto space-x-8 w-1/1">
-            { assets.frames.map( frame=> (
-              <div
-                className="flex-shrink-0 rounded-lg border-2 border-orange-300" 
-                key={frame.name}>
-                <img
-                  onClick={()=> { handleUrl(frame.name) }}
-                  src={`${baseURL}/img/frames/${frame.name}`}
-                  className={`object-cover object-center h-20 max-w-full rounded-lg cursor-pointer fadeMe
-                  ${ focus==frame.name ? 'focus: border-orange-300 border-5 border-dashed' : '' } `} 
-                  alt="frame-image" 
-                />
-              </div>
-            ))}
-          </section>
+      && (<>
+        <section 
+          className="flex overflow-x-auto space-x-8 w-1/1">
+          { assets.frames.map( frame=> (
+            <div
+              className="flex-shrink-0 rounded-lg border-2 border-orange-300" 
+              key={frame.name}>
+              <img
+                onClick={()=> { handleUrl(frame.name) }}
+                src={`${baseURL}/img/frames/${frame.name}`}
+                className={`object-cover object-center h-20 max-w-full rounded-lg cursor-pointer fadeMe
+                ${ focus==frame.name ? 'focus: border-orange-300 border-5 border-dashed' : '' } `} 
+                alt="frame-image" 
+              />
+            </div>
+          ))}
+        </section>
 
-          <Button
-            disabled={!focus}
-            handleOnClick={selectFrame}>
-              <FaRegCheckCircle className='mr-2' size={"1.3rem"} />
-              Seleccionar
-          </Button>
-        </>)
-      }
+        <Button
+          disabled={!focus}
+          handleOnClick={selectFrame}>
+            <FaRegCheckCircle className='mr-2' size={"1.3rem"} />
+            Seleccionar
+        </Button>
+      </>)}
     </div>
   );
 }
