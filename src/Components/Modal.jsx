@@ -30,7 +30,7 @@ export default function Modal({ children }) {
               <IoMdClose className='mr-0' size={"1.3rem"} />
             </button>
           </div>
-          <div  className='modal-body'>
+          <div className='modal-body h-[72vh]'>
             {modalIsOpen ? children : null}
           </div>
         </div>

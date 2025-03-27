@@ -17,6 +17,8 @@ export const MediaContext = createContext({
   setIsVideo:()=>{},
   photoType:false,
   setPhotoType:()=>{},
+  openSurvey:false,
+  setOpensurvey:()=>{},
   error:undefined,
   setError:()=>{},
   // Custom funcs
@@ -36,6 +38,7 @@ const MediaCtxProvider = ({ children }) => {
   const [loading, setLoading]= useState(false);
   const [isvideo, setIsVideo]= useState(false);
   const [photoType, setPhotoType]= useState(false);
+  const [openSurvey, setOpensurvey]= useState(false);
 
   const closeModal= () => {
     setSelectedImg(undefined)
@@ -44,7 +47,8 @@ const MediaCtxProvider = ({ children }) => {
     setError(undefined)
     setPhotoType(false)
     setSelectedAudio(undefined)
-    setIsVideo(false);
+    setIsVideo(false)
+    setOpensurvey(false)
   }
 
   const openModal= () => {
@@ -76,6 +80,8 @@ const MediaCtxProvider = ({ children }) => {
     setIsVideo,
     photoType,
     setPhotoType,
+    openSurvey,
+    setOpensurvey,
     error,
     setError,
     closeModal,

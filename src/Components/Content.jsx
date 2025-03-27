@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
 // icons
-import { FaStar } from "react-icons/fa";
+import { RiSurveyFill } from "react-icons/ri";
 import { MdAddAPhoto } from "react-icons/md";
 // Services
-import { getAssets } from '../services/http';
+import { getAssets, surveyURL } from '../services/http';
 // Components
 import Modal from './Modal';
 import Button from './Button';
@@ -12,6 +12,7 @@ import Music from './Music';
 import Error from './Error';
 import MediaActions from './MediaActions';
 import MediaCanvas from './MediaCanvas';
+import Survey from './Survey';
 // Context
 import { MediaContext } from '../context/MediaContext';
 
@@ -24,6 +25,7 @@ const Content = () => {
     selectedAudio,
     openModal,
     startLoader, stopLoader,
+    openSurvey, setOpensurvey,
     setError
   }= useContext(MediaContext);
 
@@ -43,14 +45,18 @@ const Content = () => {
   }, [])
 
   const showSurvey= () => {
-    alert('link to survey...')
+    openModal()
+    setOpensurvey(true);
+    setTimeout(()=> {
+      window.open(surveyURL, 'surveyiFrame');
+    }, 600)
   }
 
   return (<>
     {/* Content wrapper */}
     <div 
       className="grid grid-cols-1 lg:grid-cols-2 
-      justify-center mt-[35%] my-10 p-10 m-auto">
+      justify-center mt-[35%] my-10 p-8 m-auto">
 
       {/* Errors */}
       <Error />
@@ -59,8 +65,8 @@ const Content = () => {
       <div className='py-10 p-2 m-0 flex justify-center'>
         <Button 
           handleOnClick={showSurvey}>
-            <FaStar className='mr-2' size={"1.3rem"} />
-            Calificanos
+            <RiSurveyFill className='mr-2' size={"1.3rem"} />
+            Contestar encuesta
         </Button>
       </div>
       {/* Open modal button */}
@@ -73,27 +79,34 @@ const Content = () => {
       </div>
     </div>
 
-    {/* Modal and dyn content */}
-    <Modal>
-      <div className="h-[75vh]">
+    {/* Modal Media and dyn content */}
+    {!openSurvey && (
+      <Modal>
         {/* Frames selection */}
         {(!selectedFrame 
         || (selectedAudio && selectedFrame))
-        && (  <Frames /> )}
+        && ( <Frames /> )}
 
         {/* Audio selection */}
         {selectedFrame && !selectedAudio
         && ( <Music /> )}
 
         {/* Merged media result */}
-        {selectedImg
+        {selectedImg 
         && ( <MediaCanvas /> )}
 
         {/* Media buttons */}
         {selectedAudio 
         && ( <MediaActions /> )}
-      </div>
-    </Modal>
+      </Modal>
+    )}
+
+    {/* Modal survey */}
+    {openSurvey && (
+      <Modal>
+        <Survey />
+      </Modal>
+    )}
   </>);
 }
 
