@@ -6,6 +6,7 @@ import noImage from "../assets/img/no-image.jpg";
 import { FaRegCheckCircle } from "react-icons/fa";
 // Components
 import Button from "./Button";
+import RatingStars from "./RatingStars";
 // Context
 import { MediaContext } from "../context/MediaContext";
 
@@ -57,6 +58,10 @@ const Frames = () => {
             src={url}
             alt="" />
         </div>
+
+        {selectedAudio 
+        && <RatingStars />}
+        
       </>)}
       {!selectedAudio
       && (<>

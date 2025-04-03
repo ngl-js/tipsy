@@ -1,8 +1,8 @@
 import axios from "axios"
 
 export const surveyURL= 'https://mxpqsr50oid.typeform.com/to/lTr4sbqV'
-export const baseURL= 'https://tipsyapi-production.up.railway.app/tipsyAPI'
-// export const baseURL= 'http://localhost:3013/tipsyAPI'
+// export const baseURL= 'https://tipsyapi-production.up.railway.app/tipsyAPI'
+export const baseURL= 'http://localhost:3013/tipsyAPI'
 
 export const getImageMerged= async (data)=> {
   const url= `${baseURL}/mergeImg`

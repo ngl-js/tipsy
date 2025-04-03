@@ -38,3 +38,5 @@
   transform: scale(0);
   animation: scaleOut 0.3s ease-in-out;
 }
+
+svg.star-svg { display: inline !important; }

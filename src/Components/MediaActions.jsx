@@ -22,7 +22,9 @@ const MediaActions= () => {
     photoType,
     setError,
     startLoader,
-    stopLoader
+    stopLoader,
+    rating,
+    setRating
   }= useContext(MediaContext)
 
   if (!(!!selectedAudio)) return null;
@@ -40,19 +42,21 @@ const MediaActions= () => {
         data.append('frame', selectedFrame)
         data.append('type', photoType)
         data.append('audio', selectedAudio)
+        data.append('star', `star${rating}`)
 
         const resp= await getImageMerged(data);
         if (resp.type==='video')
           setIsVideo(true);
         else 
           setIsVideo(false);
-
+        setRating(0)
         const mergedFile= await setMergedFile(resp);
         setSelectedImg(mergedFile);
         stopLoader();
 
       } catch (error) {
         stopLoader();
+        setRating(0)
         setError(error.message ? error.message : 'Error al cargar archivo');
       }
     } 
