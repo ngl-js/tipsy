@@ -1,53 +1,51 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 
 export const MediaContext = createContext({
   // States
-  assets:[],
-  setAssets:()=>{},
-  selectedImg:'',
-  setSelectedImg:()=>{},
-  selectedFrame:'',
-  setSelectedFrame:()=>{},
-  selectedAudio:undefined,
-  setSelectedAudio:()=>{},
-  modalIsOpen:false,
-  setModalIsOpen:()=>{},
-  loading:false,
-  isvideo:false,
-  setIsVideo:()=>{},
-  photoType:false,
-  setPhotoType:()=>{},
-  openSurvey:false,
-  setOpensurvey:()=>{},
-  error:undefined,
-  setError:()=>{},
-  rating:undefined,
-  setRating:()=>{},
-  check:false,
-  setCheck:()=>{},
+  assets: [],
+  setAssets: () => { },
+  selectedImg: '',
+  setSelectedImg: () => { },
+  selectedFrame: '',
+  setSelectedFrame: () => { },
+  selectedAudio: undefined,
+  setSelectedAudio: () => { },
+  modalIsOpen: false,
+  setModalIsOpen: () => { },
+  loading: false,
+  isvideo: false,
+  setIsVideo: () => { },
+  photoType: false,
+  setPhotoType: () => { },
+  openSurvey: false,
+  setOpensurvey: () => { },
+  error: undefined,
+  setError: () => { },
+  rating: undefined,
+  setmyRating: () => { },
   // Custom funcs
-  closeModal:()=>{},
-  openModal:()=>{},
-  startLoader:()=>{},
-  stopLoader:()=>{},
+  closeModal: () => { },
+  openModal: () => { },
+  startLoader: () => { },
+  stopLoader: () => { },
 });
 
 const MediaCtxProvider = ({ children }) => {
-  const [assets, setAssets]= useState([]);
-  const [selectedImg, setSelectedImg]= useState('');
-  const [selectedFrame, setSelectedFrame]= useState();
-  const [selectedAudio, setSelectedAudio]= useState();
-  const [error, setError]= useState();
+  const [assets, setAssets] = useState([]);
+  const [selectedImg, setSelectedImg] = useState('');
+  const [selectedFrame, setSelectedFrame] = useState();
+  const [selectedAudio, setSelectedAudio] = useState();
+  const [error, setError] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [loading, setLoading]= useState(false);
-  const [isvideo, setIsVideo]= useState(false);
-  const [photoType, setPhotoType]= useState(false);
-  const [openSurvey, setOpensurvey]= useState(false);
-  const [rating, setRating] = useState(0)
-  const [check, setCheck] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [isvideo, setIsVideo] = useState(false);
+  const [photoType, setPhotoType] = useState(false);
+  const [openSurvey, setOpensurvey] = useState(false);
+  const [rating, setmyRating] = useState(0)
+  // const [check, setCheck] = useState(false)
 
 
-  const closeModal= () => {
+  const closeModal = () => {
     setSelectedImg(undefined)
     setSelectedFrame(undefined)
     setModalIsOpen(false)
@@ -56,21 +54,22 @@ const MediaCtxProvider = ({ children }) => {
     setSelectedAudio(undefined)
     setIsVideo(false)
     setOpensurvey(false)
+    setmyRating(0)
   }
 
-  const openModal= () => {
+  const openModal = () => {
     setModalIsOpen(true)
   }
 
-  const startLoader= () => {
+  const startLoader = () => {
     setLoading(true)
   }
 
-  const stopLoader= () => {
+  const stopLoader = () => {
     setLoading(false)
   }
 
-  const Media= {
+  const Media = {
     assets,
     setAssets,
     selectedImg,
@@ -92,9 +91,7 @@ const MediaCtxProvider = ({ children }) => {
     error,
     setError,
     rating,
-    setRating,
-    check,
-    setCheck,
+    setmyRating,
     closeModal,
     openModal,
     startLoader,

@@ -11,10 +11,10 @@ import { setMergedFile } from '../utils/utils';
 // Context
 import { MediaContext } from "../context/MediaContext";
 
-const MediaActions= () => {
+const MediaActions = () => {
 
-  const { 
-    selectedImg, 
+  const {
+    selectedImg,
     selectedFrame,
     selectedAudio,
     setSelectedImg,
@@ -23,47 +23,44 @@ const MediaActions= () => {
     setError,
     startLoader,
     stopLoader,
-    rating,
-    setRating
-  }= useContext(MediaContext)
+    rating
+  } = useContext(MediaContext)
 
   if (!(!!selectedAudio)) return null;
 
-  const inputFileRef = useRef( null );
+  const inputFileRef = useRef(null);
 
-  const sendToMerge= async (e) => {
+  const sendToMerge = async (e) => {
     const files = e.target.files;
 
     if (!!files?.length) {
       try {
         startLoader()
-        let data= new FormData()
+        let data = new FormData()
         data.append('photo', files[0])
         data.append('frame', selectedFrame)
         data.append('type', photoType)
         data.append('audio', selectedAudio)
         data.append('star', `star${rating}`)
 
-        const resp= await getImageMerged(data);
-        if (resp.type==='video')
+        const resp = await getImageMerged(data);
+        if (resp.type === 'video')
           setIsVideo(true);
-        else 
+        else
           setIsVideo(false);
-        setRating(0)
-        const mergedFile= await setMergedFile(resp);
+        const mergedFile = await setMergedFile(resp);
         setSelectedImg(mergedFile);
         stopLoader();
 
       } catch (error) {
         stopLoader();
-        setRating(0)
         setError(error.message ? error.message : 'Error al cargar archivo');
       }
-    } 
+    }
     else setError('No fue posible obtener media');
   }
-  
-  const shareBtn= ()=> {
+
+  const shareBtn = () => {
     if ("share" in navigator) {
       navigator
         .share({
@@ -74,11 +71,11 @@ const MediaActions= () => {
         .then(() => {
           console.log("Media shared!");
         })
-        .catch((error)=> {
+        .catch((error) => {
           setError(error.message ? error.message : 'Error al compartir archivo');
         });
     } else {
-      let random= Math.floor(Math.random()*10)
+      let random = Math.floor(Math.random() * 10)
       const linkElement = document.createElement('a')
       linkElement.download = `image-${random}.jpg`
       linkElement.href = selectedImg.blob
@@ -90,39 +87,39 @@ const MediaActions= () => {
     inputFileRef.current.click();
   }
 
-  let colSize= (selectedImg && selectedAudio);
+  let colSize = (selectedImg && selectedAudio);
 
   return (<>
-    <div className={`grid grid-cols-${colSize ? '2':'1'} gap-4 mt-2`}>
+    <div className={`grid grid-cols-${colSize ? '2' : '1'} gap-4 mt-2`}>
       {/* Camera/File button */}
       <div className='flex justify-center'>
         <Button
           handleOnClick={onPhotoBtnClick}>
-            <MdAddAPhoto className='mr-2' size={"1.3rem"} />
-            Tomar foto
+          <MdAddAPhoto className='mr-2' size={"1.3rem"} />
+          Tomar foto
         </Button>
-        <input 
+        <input
           ref={inputFileRef}
-          type="file" 
+          type="file"
           accept='image/*'
           className='hidden'
-          capture="environment" 
+          capture="environment"
           onChange={sendToMerge}
           disabled={!selectedFrame}
         />
       </div>
       {/* Share button */}
-      {selectedImg  
-      && (
-        <div className='flex justify-center'>
-          <Button 
-            role="button"
-            handleOnClick={shareBtn}>
+      {selectedImg
+        && (
+          <div className='flex justify-center'>
+            <Button
+              role="button"
+              handleOnClick={shareBtn}>
               <MdShare className='mr-2' size={"1.3rem"} />
               Compartir
-          </Button>
-        </div>
-      )}
+            </Button>
+          </div>
+        )}
     </div>
   </>)
 }
