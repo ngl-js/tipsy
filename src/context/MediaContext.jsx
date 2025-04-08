@@ -3,36 +3,36 @@ import { createContext, useCallback, useState } from "react";
 export const MediaContext = createContext({
   // States
   assets: [],
-  setAssets: () => { },
-  selectedImg: '',
-  setSelectedImg: () => { },
-  selectedFrame: '',
-  setSelectedFrame: () => { },
+  setAssets: () => {},
+  selectedImg: "",
+  setSelectedImg: () => {},
+  selectedFrame: "",
+  setSelectedFrame: () => {},
   selectedAudio: undefined,
-  setSelectedAudio: () => { },
+  setSelectedAudio: () => {},
   modalIsOpen: false,
-  setModalIsOpen: () => { },
+  setModalIsOpen: () => {},
   loading: false,
   isvideo: false,
-  setIsVideo: () => { },
+  setIsVideo: () => {},
   photoType: false,
-  setPhotoType: () => { },
+  setPhotoType: () => {},
   openSurvey: false,
-  setOpensurvey: () => { },
+  setOpensurvey: () => {},
   error: undefined,
-  setError: () => { },
-  rating: undefined,
-  setmyRating: () => { },
+  setError: () => {},
+  rating: 0,
+  setmyRating: () => {},
   // Custom funcs
-  closeModal: () => { },
-  openModal: () => { },
-  startLoader: () => { },
-  stopLoader: () => { },
+  closeModal: () => {},
+  openModal: () => {},
+  startLoader: () => {},
+  stopLoader: () => {},
 });
 
 const MediaCtxProvider = ({ children }) => {
   const [assets, setAssets] = useState([]);
-  const [selectedImg, setSelectedImg] = useState('');
+  const [selectedImg, setSelectedImg] = useState("");
   const [selectedFrame, setSelectedFrame] = useState();
   const [selectedAudio, setSelectedAudio] = useState();
   const [error, setError] = useState();
@@ -41,33 +41,32 @@ const MediaCtxProvider = ({ children }) => {
   const [isvideo, setIsVideo] = useState(false);
   const [photoType, setPhotoType] = useState(false);
   const [openSurvey, setOpensurvey] = useState(false);
-  const [rating, setmyRating] = useState(0)
+  const [rating, setmyRating] = useState(0);
   // const [check, setCheck] = useState(false)
 
-
   const closeModal = () => {
-    setSelectedImg(undefined)
-    setSelectedFrame(undefined)
-    setModalIsOpen(false)
-    setError(undefined)
-    setPhotoType(false)
-    setSelectedAudio(undefined)
-    setIsVideo(false)
-    setOpensurvey(false)
-    setmyRating(0)
-  }
+    setSelectedImg(undefined);
+    setSelectedFrame(undefined);
+    setModalIsOpen(false);
+    setError(undefined);
+    setPhotoType(false);
+    setSelectedAudio(undefined);
+    setIsVideo(false);
+    setOpensurvey(false);
+    setmyRating(0);
+  };
 
   const openModal = () => {
-    setModalIsOpen(true)
-  }
+    setModalIsOpen(true);
+  };
 
   const startLoader = () => {
-    setLoading(true)
-  }
+    setLoading(true);
+  };
 
   const stopLoader = () => {
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const Media = {
     assets,
@@ -95,14 +94,12 @@ const MediaCtxProvider = ({ children }) => {
     closeModal,
     openModal,
     startLoader,
-    stopLoader
-  }
+    stopLoader,
+  };
 
   return (
-    <MediaContext.Provider value={Media}>
-      {children}
-    </MediaContext.Provider>
+    <MediaContext.Provider value={Media}>{children}</MediaContext.Provider>
   );
-}
+};
 
 export default MediaCtxProvider;
