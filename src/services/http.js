@@ -3,7 +3,7 @@ import axios from "axios";
 export const surveyURL = "https://mxpqsr50oid.typeform.com/to/lTr4sbqV";
 export const baseURL = "https://tipsyapi-production.up.railway.app/tipsyAPI";
 // export const baseURL = "http://localhost:3013/tipsyAPI";
-const appid = window.location.href.split("/")[4];
+const appid = window.location.href.split("/")[3];
 
 export const getImageMerged = async (data = new FormData()) => {
   let url = `${baseURL}/mergeImg`;
@@ -33,7 +33,7 @@ export const getAssets = async () => {
 export const setAssetsUrl = () => {
   let url;
   !!appid
-    ? (url = `${baseURL}/img/event/frames`)
-    : (url = `${baseURL}/img/frames`);
+    ? (url = `${baseURL}/img/frames/${appid}`)
+    : (url = `${baseURL}/img/frames/standar`);
   return url;
 };
