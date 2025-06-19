@@ -1,5 +1,7 @@
 import { createContext, useCallback, useState } from "react";
 
+let audioObj = { name: undefined, start: 0 };
+
 export const MediaContext = createContext({
   // States
   assets: [],
@@ -8,7 +10,7 @@ export const MediaContext = createContext({
   setSelectedImg: () => {},
   selectedFrame: "",
   setSelectedFrame: () => {},
-  selectedAudio: undefined,
+  selectedAudio: audioObj,
   setSelectedAudio: () => {},
   modalIsOpen: false,
   setModalIsOpen: () => {},
@@ -34,7 +36,7 @@ const MediaCtxProvider = ({ children }) => {
   const [assets, setAssets] = useState([]);
   const [selectedImg, setSelectedImg] = useState("");
   const [selectedFrame, setSelectedFrame] = useState();
-  const [selectedAudio, setSelectedAudio] = useState();
+  const [selectedAudio, setSelectedAudio] = useState(audioObj);
   const [error, setError] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,7 @@ const MediaCtxProvider = ({ children }) => {
     setModalIsOpen(false);
     setError(undefined);
     setPhotoType(false);
-    setSelectedAudio(undefined);
+    setSelectedAudio(audioObj);
     setIsVideo(false);
     setOpensurvey(false);
     setmyRating(0);

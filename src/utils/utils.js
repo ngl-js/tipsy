@@ -1,17 +1,16 @@
 /**
- * 
- * @param {*} resp 
+ *
+ * @param {*} resp
  * Convertir base64 a File[] y URL blob
  */
-export const setMergedFile= async (resp)=> {
-  let blob, imageType, filename
-  if (resp.type=='video') {
-    imageType= 'video/mp4'
-    filename= "mimomento.mp4"
-  } 
-  else {
-    imageType= 'image/webp'
-    filename= "mimomento.webp"
+export const setMergedFile = async (resp) => {
+  let blob, imageType, filename;
+  if (resp.type == "video") {
+    imageType = "video/mp4";
+    filename = "mimomento.mp4";
+  } else {
+    imageType = "image/webp";
+    filename = "mimomento.webp";
   }
   // Decode Base64 string
   const decodedData = window.atob(resp.b64);
@@ -22,12 +21,20 @@ export const setMergedFile= async (resp)=> {
     uInt8Array[i] = decodedData.charCodeAt(i);
   }
   // Return BLOB image after conversion
-  blob= new Blob([uInt8Array], {type: imageType});
+  blob = new Blob([uInt8Array], { type: imageType });
   // Setting new fileArray and file to navigator.share
-  let _file = new File([blob], filename, {type: imageType});
+  let _file = new File([blob], filename, { type: imageType });
   let filesArray = [_file];
   return {
-    files: filesArray, 
-    blob: URL.createObjectURL(_file)
-  }
-}
+    files: filesArray,
+    blob: URL.createObjectURL(_file),
+  };
+};
+
+export const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+};
+
+export const noSurvey = ["7h1pHUMlfe"];

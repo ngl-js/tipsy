@@ -1,113 +1,114 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from "react";
 // icons
 import { RiSurveyFill } from "react-icons/ri";
 import { MdAddAPhoto } from "react-icons/md";
 // Services
-import { getAssets, surveyURL } from '../services/http';
+import { appid, getAssets, surveyURL } from "../services/http";
 // Components
-import Modal from './Modal';
-import Button from './Button';
-import Frames from './Frames';
-import Music from './Music';
-import Error from './Error';
-import MediaActions from './MediaActions';
-import MediaCanvas from './MediaCanvas';
-import Survey from './Survey';
+import Modal from "./Modal";
+import Button from "./Button";
+import Frames from "./Frames";
+import Music from "./Music";
+import Error from "./Error";
+import MediaActions from "./MediaActions";
+import MediaCanvas from "./MediaCanvas";
+import Survey from "./Survey";
 // Context
-import { MediaContext } from '../context/MediaContext';
+import { MediaContext } from "../context/MediaContext";
+import { noSurvey } from "../utils/utils";
 
 const Content = () => {
-
-  const { 
+  const {
     setAssets,
     selectedImg,
     selectedFrame,
     selectedAudio,
     openModal,
-    startLoader, stopLoader,
-    openSurvey, setOpensurvey,
-    setError
-  }= useContext(MediaContext);
+    startLoader,
+    stopLoader,
+    openSurvey,
+    setOpensurvey,
+    setError,
+  } = useContext(MediaContext);
 
-  useEffect( ()=> {
-    startLoader()
+  useEffect(() => {
+    startLoader();
     async function fecthAssets() {
       try {
-        const resp= await getAssets()
+        const resp = await getAssets();
         setAssets(resp);
         stopLoader();
       } catch (error) {
         stopLoader();
-        setError(error.message ? error.message : 'Error al cargar assets');
+        setError(error.message ? error.message : "Error al cargar assets");
       }
     }
     fecthAssets();
-  }, [])
+  }, []);
 
-  const showSurvey= () => {
-    openModal()
+  const showSurvey = () => {
+    openModal();
     setOpensurvey(true);
-    setTimeout(()=> {
-      window.open(surveyURL, 'surveyiFrame');
-    }, 600)
-  }
+    setTimeout(() => {
+      window.open(surveyURL, "surveyiFrame");
+    }, 600);
+  };
 
-  return (<>
-    {/* Content wrapper */}
-    <div 
-      className="grid grid-cols-1 lg:grid-cols-2 
-      justify-center mt-[35%] my-10 p-8 m-auto">
+  return (
+    <>
+      {/* Content wrapper */}
+      <div
+        className="grid grid-cols-1 lg:grid-cols-2 
+      justify-center mt-[35%] my-10 p-8 m-auto"
+      >
+        {/* Errors */}
+        <Error />
 
-      {/* Errors */}
-      <Error />
-
-      {/* Survey button */}
-      <div className='py-10 p-2 m-0 flex justify-center'>
-        <Button 
-          handleOnClick={showSurvey}>
-            <RiSurveyFill className='mr-2' size={"1.3rem"} />
-            Contestar encuesta
-        </Button>
-      </div>
-      {/* Open modal button */}
-      <div className='py-10 p-2 m-0 flex justify-center'>
-        <Button
-          handleOnClick={openModal}>
-            <MdAddAPhoto className='mr-2' size={"1.1rem"} />
+        {/* Survey button */}
+        {!noSurvey.includes(appid) && (
+          <div className="py-10 p-2 m-0 flex justify-center">
+            <Button handleOnClick={showSurvey}>
+              <RiSurveyFill className="mr-2" size={"1.3rem"} />
+              Contestar encuesta
+            </Button>
+          </div>
+        )}
+        {/* Open modal button */}
+        <div className="py-10 p-2 m-0 flex justify-center">
+          <Button handleOnClick={openModal}>
+            <MdAddAPhoto className="mr-2" size={"1.1rem"} />
             Mi momento
-        </Button>
+          </Button>
+        </div>
       </div>
-    </div>
 
-    {/* Modal Media and dyn content */}
-    {!openSurvey && (
-      <Modal>
-        {/* Frames selection */}
-        {(!selectedFrame 
-        || (selectedAudio && selectedFrame))
-        && ( <Frames /> )}
+      {/* Modal Media and dyn content */}
+      {!openSurvey && (
+        <Modal>
+          {/* Frames selection */}
+          {(!selectedFrame || (selectedAudio?.name && selectedFrame)) && (
+            <Frames />
+          )}
 
-        {/* Audio selection */}
-        {selectedFrame && !selectedAudio
-        && ( <Music /> )}
+          {/* Audio selection */}
+          {selectedFrame && !selectedAudio?.name && <Music />}
 
-        {/* Merged media result */}
-        {selectedImg 
-        && ( <MediaCanvas /> )}
+          {/* Merged media result */}
+          {selectedImg && <MediaCanvas />}
 
-        {/* Media buttons */}
-        {selectedAudio 
-        && ( <MediaActions /> )}
-      </Modal>
-    )}
+          {/* Media buttons */}
+          {selectedAudio?.name && <MediaActions />}
+        </Modal>
+      )}
 
-    {/* Modal survey */}
-    {openSurvey && (
-      <Modal>
-        <Survey />
-      </Modal>
-    )}
-  </>);
-}
+      {/* Modal survey */}
+      {openSurvey && (
+        <Modal>
+          <Survey />
+        </Modal>
+      )}
+    </>
+  );
+};
 
 export default Content;

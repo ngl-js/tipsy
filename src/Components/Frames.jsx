@@ -30,7 +30,7 @@ const Frames = () => {
   };
 
   let titulo;
-  selectedAudio
+  selectedAudio?.name
     ? (titulo = "Tomar una fotografía")
     : (titulo = "Seleccionar un marco");
 
@@ -55,12 +55,12 @@ const Frames = () => {
             />
           </div>
 
-          {selectedAudio && <RatingStars />}
+          {selectedAudio?.name && <RatingStars />}
         </>
       )}
-      {!selectedAudio && (
+      {!selectedAudio?.name && (
         <>
-          <section className="flex overflow-x-auto space-x-8 w-1/1">
+          <section className="flex justify-center overflow-x-auto space-x-8 w-1/1">
             {assets.frames.map((frame) => (
               <div
                 className="flex-shrink-0 rounded-lg border-2 border-orange-300"
