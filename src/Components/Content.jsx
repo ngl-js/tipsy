@@ -1,9 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 // icons
 import { RiSurveyFill } from "react-icons/ri";
 import { MdAddAPhoto } from "react-icons/md";
 // Services
-import { appid, getAssets, surveyURL } from "../services/http";
+import { appid, getAssets, getSurveys } from "../services/http";
 // Components
 import Modal from "./Modal";
 import Button from "./Button";
@@ -15,7 +15,6 @@ import MediaCanvas from "./MediaCanvas";
 import Survey from "./Survey";
 // Context
 import { MediaContext } from "../context/MediaContext";
-import { noSurvey } from "../utils/utils";
 
 const Content = () => {
   const {
@@ -31,26 +30,36 @@ const Content = () => {
     setError,
   } = useContext(MediaContext);
 
+  const [surveys, setSurveys] = useState([]);
+
   useEffect(() => {
     startLoader();
-    async function fecthAssets() {
+    async function initAssets() {
       try {
+        // api
         const resp = await getAssets();
+        const resp_surveys = await getSurveys();
+        // set state
         setAssets(resp);
+        setSurveys(resp_surveys);
         stopLoader();
       } catch (error) {
         stopLoader();
         setError(error.message ? error.message : "Error al cargar assets");
       }
     }
-    fecthAssets();
+    initAssets();
   }, []);
+
+  const url_Survey = () => {
+    return surveys.find((s) => s.appid == appid)?.survey;
+  };
 
   const showSurvey = () => {
     openModal();
     setOpensurvey(true);
     setTimeout(() => {
-      window.open(surveyURL, "surveyiFrame");
+      window.open(url_Survey(), "surveyiFrame");
     }, 600);
   };
 
@@ -65,7 +74,7 @@ const Content = () => {
         <Error />
 
         {/* Survey button */}
-        {!noSurvey.includes(appid) && (
+        {!!url_Survey() && (
           <div className="py-10 p-2 m-0 flex justify-center">
             <Button handleOnClick={showSurvey}>
               <RiSurveyFill className="mr-2" size={"1.3rem"} />

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-export const surveyURL = "https://mxpqsr50oid.typeform.com/to/lTr4sbqV";
 export const baseURL = "https://tipsyapi-production.up.railway.app/tipsyAPI";
 // export const baseURL = "http://localhost:3013/tipsyAPI";
 export const appid = window.location.href.split("/")[3];
@@ -17,7 +16,6 @@ export const getImageMerged = async (data = new FormData()) => {
 };
 
 export const getAssets = async () => {
-  console.log(appid);
   let url;
   !!appid
     ? (url = `${baseURL}/getAssets/${appid}`)
@@ -36,4 +34,13 @@ export const setAssetsUrl = () => {
     ? (url = `${baseURL}/img/frames/${appid}`)
     : (url = `${baseURL}/img/frames/standar`);
   return url;
+};
+
+export const getSurveys = async () => {
+  let url = `${baseURL}/getSurveys`;
+
+  const resp = await axios.get(url);
+  if (resp.status !== 200) throw new Error("Error al obtener datos encuentas");
+
+  return resp.data;
 };
