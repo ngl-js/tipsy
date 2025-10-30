@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 // icons
 import { RiSurveyFill } from "react-icons/ri";
 import { MdAddAPhoto } from "react-icons/md";
+import noImage from "../assets/img/no-image.jpg";
+
 // Services
 import { appid, getAssets, getSurveys } from "../services/http";
 // Components
@@ -55,6 +57,8 @@ const Content = () => {
     return surveys.find((s) => s.appid == appid)?.survey;
   };
 
+  const onlyPhoto = appid == "pRiBast5t2";
+
   const showSurvey = () => {
     openModal();
     setOpensurvey(true);
@@ -94,19 +98,37 @@ const Content = () => {
       {/* Modal Media and dyn content */}
       {!openSurvey && (
         <Modal>
-          {/* Frames selection */}
-          {(!selectedFrame || (selectedAudio?.name && selectedFrame)) && (
-            <Frames />
+          {/* NOTE: HotFix */}
+          {onlyPhoto && !selectedImg && (
+            <>
+              <h1 className="text-center text-2xl text-orange-500">
+                Tomar una fotografía
+              </h1>
+              <div className="flex justify-center">
+                <img
+                  className="pb-4 rounded-lg object-cover 
+              object-center h-[50vh] fadeMe"
+                  src={noImage}
+                  alt=""
+                />
+              </div>
+            </>
           )}
 
+          {/* Frames selection */}
+          {(!selectedFrame || (selectedAudio?.name && selectedFrame)) &&
+            !onlyPhoto && <Frames />}
+
           {/* Audio selection */}
-          {selectedFrame && !selectedAudio?.name && <Music />}
+          {selectedFrame && !selectedAudio?.name && !onlyPhoto && <Music />}
 
           {/* Merged media result */}
-          {selectedImg && <MediaCanvas />}
+          {((selectedImg && !onlyPhoto) || (selectedImg && onlyPhoto)) && (
+            <MediaCanvas />
+          )}
 
           {/* Media buttons */}
-          {selectedAudio?.name && <MediaActions />}
+          {(selectedAudio?.name || onlyPhoto) && <MediaActions />}
         </Modal>
       )}
 

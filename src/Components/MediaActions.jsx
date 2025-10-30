@@ -5,7 +5,7 @@ import { MdAddAPhoto } from "react-icons/md";
 // Components
 import Button from "./Button";
 // Services
-import { getImageMerged } from "../services/http";
+import { appid, getImageMerged } from "../services/http";
 // Otros
 import { setMergedFile } from "../utils/utils";
 // Context
@@ -25,7 +25,11 @@ const MediaActions = () => {
     rating,
   } = useContext(MediaContext);
 
-  if (!!!selectedAudio?.name) return null;
+  const onlyPhoto = appid == "pRiBast5t2";
+
+  console.log(!!!selectedAudio?.namae && !onlyPhoto);
+
+  // if (!!!selectedAudio?.namae && onlyPhoto) return null;
 
   const inputFileRef = useRef(null);
 
@@ -84,7 +88,9 @@ const MediaActions = () => {
     inputFileRef.current.click();
   };
 
-  let colSize = selectedImg && selectedAudio;
+  let colSize =
+    (selectedImg && selectedAudio && !onlyPhoto) ||
+    (!selectedImg && !selectedAudio && onlyPhoto);
 
   return (
     <>
@@ -102,7 +108,7 @@ const MediaActions = () => {
             className="hidden"
             capture="environment"
             onChange={sendToMerge}
-            disabled={!selectedFrame}
+            disabled={!selectedFrame && !onlyPhoto}
           />
         </div>
         {/* Share button */}
